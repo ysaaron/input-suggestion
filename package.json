@@ -1,0 +1,12 @@
+{
+  "name": "input-suggestion",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ysaaron/input-suggestion.git",
+  "author": "Aaron Young <aaron.young@tenmax.io>",
+  "license": "MIT",
+  "devDependencies": {
+    "less-loader": "^4.0.5",
+    "webpack": "^3.9.1"
+  }
+}
