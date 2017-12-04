@@ -1,10 +1,18 @@
 li.list-item {
     list-style: none;
     border: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    height: 48px;
+
+    &:hover {
+        background-color: #ececec;
+    }
 
     .list-item_icon {
-        width: 36px;
-        height: 36px;
+        width: 30px;
+        height: 30px;
         margin-top: 12px;
         margin-bottom: 12px;
         margin-left: 12px;
@@ -16,12 +24,25 @@ li.list-item {
         vertical-align: middle;
         padding-left: 6px;
     }
-}
 
-li.list-item_history {
-    background-color: #ececec;
+    .list-item_history {
+        background-color: #f1f1f1;
+    }
 }
 
 .remove-button {
-    
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+
+    color: #111;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+
+    &:hover {
+        background-color: white;
+        border-color: white;
+    }
 }

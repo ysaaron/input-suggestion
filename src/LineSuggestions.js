@@ -4,8 +4,7 @@ import style from './LineSuggestions.less'
 
 const defaultProps = {
     hookPoint: undefined,
-    onSuggestionChoosed: () => {},
-    onRemoveHistory: () => {}
+    onSuggestionChoosed: () => {}
 }
 
 const defaultSuggestions = [
@@ -23,44 +22,78 @@ const defaultSuggestions = [
         name: 'Line Me',
         logo: '../example/img/images.jpeg'
         // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
+    },
+    {
+        name: 'Line Me',
+        logo: '../example/img/images.jpeg'
+        // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
+    },
+    {
+        name: 'Line Me',
+        logo: '../example/img/images.jpeg'
+        // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
+    },
+    {
+        name: 'Line Me',
+        logo: '../example/img/images.jpeg'
+        // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
+    },
+    {
+        name: 'Line Me',
+        logo: '../example/img/images.jpeg'
+        // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
+    },
+    {
+        name: 'Line Me',
+        logo: '../example/img/images.jpeg'
+        // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
+    },
+    {
+        name: 'Line Me',
+        logo: '../example/img/images.jpeg'
+        // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
+    },
+    {
+        name: 'Line Me',
+        logo: '../example/img/images.jpeg'
+        // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
+    },
+    {
+        name: 'Line Me',
+        logo: '../example/img/images.jpeg'
+        // logo: 'https://d.line-scdn.net/stf/line-lp/family/en/b612_190.png'
     }
 ]
 
 export default class LineSuggestions {
     constructor(props = defaultProps) {
-        let {
-            hookPoint,
-            onSuggestionChoosed,
-            onRemoveHistory
-        } = useDefaultProps(defaultProps, props)
-        if (!hookPoint) throw 'Please provide a dom!'
+        this._props = useDefaultProps(defaultProps, props)
+        if (!this._props.hookPoint) throw 'Please provide a dom!'
 
-        this._hookPoint = hookPoint
-        this._listWrapper = undefined
+        this._hookPoint = this._props.hookPoint
         this._suggestions = defaultSuggestions
-        this.onRemoveHistory = onRemoveHistory
-        this.onSuggestionChoosed = onSuggestionChoosed
-
-        this._initialized()
+        this._listWrapper = undefined
+        this._listContainer = undefined
+        this._isOpen = false
+        this._beforeMount()
         this._render()
     }
 
-    _initialized() {
-        let listContainer = document.createElement('div')
+    _beforeMount() {
+        this._listContainer = document.createElement('div')
         this._listWrapper = document.createElement('ul')
-        listContainer.appendChild(this._listWrapper)
-        this._hookPoint.appendChild(listContainer)
-    }
-
-    _sortSuggestions() {
-
+        this._listContainer.classList.add(style['list-container'])
+        this._listContainer.appendChild(this._listWrapper)
+        this._hookPoint.appendChild(this._listContainer)
     }
 
     _render() {
+        if (!this._isOpen) {
+            this._listContainer.style.display = 'none'
+            return
+        }
         const liFg = document.createDocumentFragment()
-        const ulFg = document.createDocumentFragment()
-        ulFg.appendChild(document.createElement('ul'))
-        const ulDOM = ulFg.querySelector('ul')
+        const ulDOM = document.createElement('ul')
         ulDOM.classList.add(style['list-wrapper'])
         this._suggestions.forEach(suggestion => {
             liFg.appendChild(
@@ -71,19 +104,18 @@ export default class LineSuggestions {
             )
         })
         ulDOM.appendChild(liFg)
-        this._listWrapper.replaceWith(ulFg)
-    }
-
-    removeHistory = e => {
-
-    }
-
-    suggestionChoosed = e => {
-
+        this._listWrapper.replaceWith(ulDOM)
+        this._listContainer.style.display = ''
     }
     
     showSuggestions = (keyword = '') => {
         this._keyword = keyword
+        this._isOpen = true
+        this._render()
+    }
+
+    closeRequest = () => {
+        this._isOpen = false
         this._render()
     }
 }

@@ -15,7 +15,8 @@ const defaultContentProps = {
 }
 
 const defaultRemoveHistoryButtonProps = {
-    isHistory: false
+    isHistory: false,
+    onHistoryRemove: () => {}
 }
 
 const Content = (props = defaultContentProps) => {
@@ -34,12 +35,23 @@ const Content = (props = defaultContentProps) => {
     return wrapper
 }
 
+const RemoveHistoryButton = (props = defaultRemoveHistoryButtonProps) => {
+    props = useDefaultProps(defaultRemoveHistoryButtonProps, props)
+
+    let buttonDOM = document.createElement('button')
+    buttonDOM.textContent = 'Remove History'
+    buttonDOM.classList.add(style['remove-button'])
+
+    return buttonDOM
+}
+
 const SuggestionItem = (props = defaultSuggestionItemProps) => {
     props = useDefaultProps(defaultSuggestionItemProps, props)
 
     let suggestionDOM = document.createElement('li')
     suggestionDOM.classList.add(style['list-item'])
     suggestionDOM.appendChild(Content(props))
+    suggestionDOM.appendChild(RemoveHistoryButton(props))
     suggestionDOM.onclick = props.onClick
 
     return suggestionDOM
