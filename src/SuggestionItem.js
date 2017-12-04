@@ -2,7 +2,7 @@ import useDefaultProps from './useDefaultProps'
 import style from './SuggestionItem.less'
 
 const defaultSuggestionItemProps = {
-    onClick: () => {},
+    onChoose: () => {},
     onRemove: () => {},
     logo: '',
     name: '',
@@ -22,9 +22,9 @@ const defaultRemoveHistoryButtonProps = {
 const Content = (props = defaultContentProps) => {
     props = useDefaultProps(defaultContentProps, props)
 
-    let wrapper = document.createElement('div')
-    let textDOM = document.createElement('span')
-    let imgDOM = document.createElement('img')
+    const wrapper = document.createElement('div')
+    const textDOM = document.createElement('span')
+    const imgDOM = document.createElement('img')
     imgDOM.src = props.logo
     imgDOM.classList.add(style['list-item_icon'])
     textDOM.textContent = props.name
@@ -38,7 +38,7 @@ const Content = (props = defaultContentProps) => {
 const RemoveHistoryButton = (props = defaultRemoveHistoryButtonProps) => {
     props = useDefaultProps(defaultRemoveHistoryButtonProps, props)
 
-    let buttonDOM = document.createElement('button')
+    const buttonDOM = document.createElement('button')
     buttonDOM.textContent = 'Remove History'
     buttonDOM.classList.add(style['remove-button'])
 
@@ -47,12 +47,17 @@ const RemoveHistoryButton = (props = defaultRemoveHistoryButtonProps) => {
 
 const SuggestionItem = (props = defaultSuggestionItemProps) => {
     props = useDefaultProps(defaultSuggestionItemProps, props)
+    const onChoose = e => {
+        props.onChoose({
+            name: props.name
+        })
+    }
 
-    let suggestionDOM = document.createElement('li')
+    const suggestionDOM = document.createElement('li')
     suggestionDOM.classList.add(style['list-item'])
     suggestionDOM.appendChild(Content(props))
-    suggestionDOM.appendChild(RemoveHistoryButton(props))
-    suggestionDOM.onclick = props.onClick
+    props.isHistory && suggestionDOM.appendChild(RemoveHistoryButton(props))
+    suggestionDOM.addEventListener('mousedown', onChoose)
 
     return suggestionDOM
 }

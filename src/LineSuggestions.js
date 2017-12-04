@@ -99,7 +99,8 @@ export default class LineSuggestions {
             liFg.appendChild(
                 SuggestionItem({
                     logo: suggestion.logo,
-                    name: suggestion.name
+                    name: suggestion.name,
+                    onChoose: this._props.onSuggestionChoosed
                 })
             )
         })
