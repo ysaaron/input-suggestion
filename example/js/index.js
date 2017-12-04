@@ -1,7 +1,7 @@
 import { LineSuggestions } from '../../src'
 
-const firstInput = document.querySelector('#firstinput')
-const secInput = document.querySelector('#secinput')
+const container = document.querySelector('#container')
 
-const firstInputWithSuggestions = new LineSuggestions(firstInput)
-const secInputWithSuggestions = new LineSuggestions(secInput)
+const lineSuggestions = new LineSuggestions({
+    hookPoint: container
+})
