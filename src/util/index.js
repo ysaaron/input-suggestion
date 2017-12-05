@@ -1,11 +1,17 @@
 import useDefaultProps from './useDefaultProps'
+import transformSuggestionData from './transformSuggestionData'
+import searchSuggestions from './searchSuggestions'
 import { 
     getSuggestionHistory,
-    setSuggestionHistory
+    setSuggestionHistory,
+    removeSuggestionHistory
 } from './suggestionHistory'
 
 export {
     useDefaultProps,
+    transformSuggestionData,
     getSuggestionHistory,
-    setSuggestionHistory
+    setSuggestionHistory,
+    removeSuggestionHistory,
+    searchSuggestions
 }

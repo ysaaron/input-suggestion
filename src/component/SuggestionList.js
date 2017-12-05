@@ -4,7 +4,10 @@ import style from './SuggestionList.less'
 
 const defaultSuggestionListProps = {
     suggestions: [],
-    onSuggestionChoosed: () => {}
+    onSuggestionChoosed: () => {},
+    onSuggestionFocusIn: () => {},
+    onSuggestionFocusOut: () => {},
+    onHistoryRemove: () => {}
 }
 
 export default function SuggestionList(props = defaultSuggestionListProps) {
@@ -19,9 +22,11 @@ export default function SuggestionList(props = defaultSuggestionListProps) {
     suggestions.forEach(suggestion => {
         liFg.appendChild(
             SuggestionItem({
-                logo: suggestion.logo,
-                name: suggestion.name,
-                onChoose: onSuggestionChoosed
+                suggestion,
+                onChoose: onSuggestionChoosed,
+                onSuggestionFocusIn: props.onSuggestionFocusIn,
+                onSuggestionFocusOut: props.onSuggestionFocusOut,
+                onHistoryRemove: props.onHistoryRemove
             })
         )
     })
