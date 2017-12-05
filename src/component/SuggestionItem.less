@@ -1,37 +1,27 @@
-li.list-item {
-    list-style: none;
-    border: 1px solid #e0e0e0;
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    height: 48px;
+@import './BasicItem.less';
 
-    &:hover {
-        background-color: #ececec;
-    }
+.list-item_icon {
+    width: 30px;
+    height: 30px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    margin-left: 12px;
+    vertical-align: middle;
+}
 
-    .list-item_icon {
-        width: 30px;
-        height: 30px;
-        margin-top: 12px;
-        margin-bottom: 12px;
-        margin-left: 12px;
-        vertical-align: middle;
-    }
+.list-item_text {
+    display: inline-block;
+    vertical-align: middle;
+    padding-left: 6px;
+}
 
-    .list-item_text {
-        display: inline-block;
-        vertical-align: middle;
-        padding-left: 6px;
-    }
+.list-item_history {
+    background-color: #f1f1f1;
+}
 
-    .list-item_history {
-        background-color: #f1f1f1;
-    }
-
-    .list-item_wrapper {
-        width: 100%;
-    }
+.list-item_wrapper {
+    width: 100%;
+    cursor: pointer;
 }
 
 .remove-button {

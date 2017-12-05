@@ -1,5 +1,6 @@
 import { useDefaultProps, transformSuggestionData, searchSuggestions, setSuggestionHistory, removeSuggestionHistory } from './util'
 import { SuggestionItem, SuggestionList } from './component'
+import { getSuggestions } from './service/suggestionService'
 import style from './LineSuggestions.less'
 
 const defaultProps = {
@@ -33,14 +34,21 @@ export default class LineSuggestions {
         this._props = useDefaultProps(defaultProps, props)
         if (!this._props.hookPoint) throw 'Please provide a dom!'
 
-        this._suggestions = searchSuggestions(transformSuggestionData(defaultSuggestions.items), '')
+        this._suggestions = []
         this._originSuggestions = this._suggestions
         this._focusSuggestion = undefined
         this._listContainer = undefined
         this._keyword = ''
         this._isOpen = false
+        this._isLoading = true
         this._beforeMount()
-        this._render()
+        getSuggestions()
+        .then(data => {
+            this._isLoading = false
+            this._suggestions = searchSuggestions(transformSuggestionData(data.items), '')
+            this._originSuggestions = this._suggestions
+            this._render()
+        })
     }
 
     _beforeMount = () => {
@@ -58,7 +66,7 @@ export default class LineSuggestions {
         this._props.onSuggestionChoosed(suggestion)
     }
     
-    _onSuggestionFocus = suggestion => {
+    _onSuggestionFocusIn = suggestion => {
         this._focusSuggestion = suggestion
     }
 
@@ -78,9 +86,10 @@ export default class LineSuggestions {
             return
         }
         this._listContainer.replaceChild(SuggestionList({
+            isLoading: this._isLoading,
             suggestions: this._suggestions,
             onSuggestionChoosed: this._onSuggestionChoosed,
-            onSuggestionFocus: this._onSuggestionFocus,
+            onSuggestionFocusIn: this._onSuggestionFocusIn,
             onSuggestionFocusOut: this._onSuggestionFocusOut,
             onHistoryRemove: this._onHistoryRemove
         }), this._listContainer.firstChild)
@@ -95,7 +104,7 @@ export default class LineSuggestions {
     }
 
     getSuggestionWithHover = () => {
-        return this._focusSuggestion
+        return !this._focusSuggestion ? undefined : { name: this._focusSuggestion.name }
     }
 
     closeRequest = () => {

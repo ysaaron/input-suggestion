@@ -1,3 +1,5 @@
+import { debounce } from '../util'
+
 function getSuggestions() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -21,10 +23,13 @@ function getSuggestions() {
                     { name: 'LINE SHOP', logo: '../example/img/lineshop.png' },
                 ]
             })
-        }, 50)
+        }, 2000)
     })
 }
 
-export default {
-    getSuggestions
+const getSuggestionsWithDebounce = debounce(getSuggestions)
+
+export {
+    getSuggestions,
+    getSuggestionsWithDebounce 
 }

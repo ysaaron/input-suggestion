@@ -71,15 +71,15 @@ const RemoveHistoryButton = (props = defaultRemoveHistoryButtonProps) => {
 const SuggestionItem = (props = defaultSuggestionItemProps) => {
     props = useDefaultProps(defaultSuggestionItemProps, props)
 
-    const suggestionDOM = document.createElement('li')
-    suggestionDOM.classList.add(style['list-item'])
-    suggestionDOM.appendChild(Content(props))
-    props.suggestion.isHistory && suggestionDOM.appendChild(RemoveHistoryButton({
+    const liDOM = document.createElement('li')
+    liDOM.classList.add(style['list-item'])
+    liDOM.appendChild(Content(props))
+    props.suggestion.isHistory && liDOM.appendChild(RemoveHistoryButton({
         suggestion: props.suggestion,
         onRemove: props.onHistoryRemove
     }))
 
-    return suggestionDOM
+    return liDOM
 }
 
 export default SuggestionItem

@@ -1,8 +1,10 @@
 import { useDefaultProps } from '../util'
 import SuggestionItem from './SuggestionItem'
+import LoadingItem from './LoadingItem'
 import style from './SuggestionList.less'
 
 const defaultSuggestionListProps = {
+    isLoading: false,
     suggestions: [],
     onSuggestionChoosed: () => {},
     onSuggestionFocusIn: () => {},
@@ -12,6 +14,7 @@ const defaultSuggestionListProps = {
 
 export default function SuggestionList(props = defaultSuggestionListProps) {
     const {
+        isLoading,
         suggestions,
         onSuggestionChoosed,
         onSuggestionFocusIn,
@@ -20,20 +23,22 @@ export default function SuggestionList(props = defaultSuggestionListProps) {
     } = useDefaultProps(defaultSuggestionListProps, props)
 
     const ulDOM = document.createElement('ul')
-    const liFg = document.createDocumentFragment()
     ulDOM.classList.add(style['list-wrapper'])
-    suggestions.forEach(suggestion => {
-        liFg.appendChild(
-            SuggestionItem({
-                suggestion,
-                onChoose: onSuggestionChoosed,
-                onSuggestionFocusIn,
-                onSuggestionFocusOut,
-                onHistoryRemove
-            })
-        )
-    })
-    ulDOM.appendChild(liFg)
+    if (isLoading) {
+        ulDOM.appendChild(LoadingItem())
+    } else {
+        suggestions.forEach(suggestion => {
+            ulDOM.appendChild(
+                SuggestionItem({
+                    suggestion,
+                    onChoose: onSuggestionChoosed,
+                    onSuggestionFocusIn,
+                    onSuggestionFocusOut,
+                    onHistoryRemove
+                })
+            )
+        })
+    }
 
     return ulDOM
 }
