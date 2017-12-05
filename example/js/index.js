@@ -15,6 +15,6 @@ const onInputFocus = e => {
     lineSuggestions.showSuggestions(e.target.value)
 }
 
-inputDOM.addEventListener('change', onInputChange)
+inputDOM.addEventListener('keyup', onInputChange)
 inputDOM.addEventListener('click', onInputFocus)
 document.addEventListener('click', e => lineSuggestions.closeRequest())

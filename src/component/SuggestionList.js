@@ -13,7 +13,10 @@ const defaultSuggestionListProps = {
 export default function SuggestionList(props = defaultSuggestionListProps) {
     const {
         suggestions,
-        onSuggestionChoosed
+        onSuggestionChoosed,
+        onSuggestionFocusIn,
+        onSuggestionFocusOut,
+        onHistoryRemove
     } = useDefaultProps(defaultSuggestionListProps, props)
 
     const ulDOM = document.createElement('ul')
@@ -24,9 +27,9 @@ export default function SuggestionList(props = defaultSuggestionListProps) {
             SuggestionItem({
                 suggestion,
                 onChoose: onSuggestionChoosed,
-                onSuggestionFocusIn: props.onSuggestionFocusIn,
-                onSuggestionFocusOut: props.onSuggestionFocusOut,
-                onHistoryRemove: props.onHistoryRemove
+                onSuggestionFocusIn,
+                onSuggestionFocusOut,
+                onHistoryRemove
             })
         )
     })

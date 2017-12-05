@@ -90,9 +90,7 @@ export default class LineSuggestions {
     showSuggestions = (keyword = '') => {
         this._keyword = keyword
         this._isOpen = true
-        // console.log(this._suggestions)
-        this._suggestions = searchSuggestions(this._suggestions, keyword)
-        // console.log(this._suggestions)
+        this._suggestions = searchSuggestions(this._originSuggestions, keyword)
         this._render()
     }
 
