@@ -73,6 +73,7 @@ const SuggestionItem = (props = defaultSuggestionItemProps) => {
 
     const liDOM = document.createElement('li')
     liDOM.classList.add(style['list-item'])
+    props.suggestion.isHistory && liDOM.classList.add(style['list-item_history'])
     liDOM.appendChild(Content(props))
     props.suggestion.isHistory && liDOM.appendChild(RemoveHistoryButton({
         suggestion: props.suggestion,
