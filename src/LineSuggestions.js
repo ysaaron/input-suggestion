@@ -1,5 +1,5 @@
-import useDefaultProps from './useDefaultProps'
-import SuggestionItem from './SuggestionItem'
+import { useDefaultProps } from './util'
+import { SuggestionItem, SuggestionList } from './component'
 import style from './LineSuggestions.less'
 
 const defaultProps = {
@@ -70,7 +70,6 @@ export default class LineSuggestions {
         this._props = useDefaultProps(defaultProps, props)
         if (!this._props.hookPoint) throw 'Please provide a dom!'
 
-        this._hookPoint = this._props.hookPoint
         this._suggestions = defaultSuggestions
         this._listWrapper = undefined
         this._listContainer = undefined
@@ -84,7 +83,7 @@ export default class LineSuggestions {
         this._listWrapper = document.createElement('ul')
         this._listContainer.classList.add(style['list-container'])
         this._listContainer.appendChild(this._listWrapper)
-        this._hookPoint.appendChild(this._listContainer)
+        this._props.hookPoint.appendChild(this._listContainer)
     }
 
     _render() {
@@ -92,20 +91,10 @@ export default class LineSuggestions {
             this._listContainer.style.display = 'none'
             return
         }
-        const liFg = document.createDocumentFragment()
-        const ulDOM = document.createElement('ul')
-        ulDOM.classList.add(style['list-wrapper'])
-        this._suggestions.forEach(suggestion => {
-            liFg.appendChild(
-                SuggestionItem({
-                    logo: suggestion.logo,
-                    name: suggestion.name,
-                    onChoose: this._props.onSuggestionChoosed
-                })
-            )
-        })
-        ulDOM.appendChild(liFg)
-        this._listWrapper.replaceWith(ulDOM)
+        this._listWrapper.replaceWith(SuggestionList({
+            suggestions: this._suggestions,
+            onSuggestionChoosed: this._props.onSuggestionChoosed
+        }))
         this._listContainer.style.display = ''
     }
     

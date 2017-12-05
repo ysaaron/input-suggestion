@@ -1,4 +1,4 @@
-import useDefaultProps from './useDefaultProps'
+import { useDefaultProps } from '../util'
 import style from './SuggestionItem.less'
 
 const defaultSuggestionItemProps = {
