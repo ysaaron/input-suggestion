@@ -1,4 +1,4 @@
-import { useDefaultProps, transformSuggestionData, searchSuggestions, setSuggestionHistory, removeSuggestionHistory, isEnterKey, isArrowDownKey, isArrowUpKey, nop } from './util'
+import { useDefaultProps, matchSuggestionHistory, searchSuggestions, setSuggestionHistory, removeSuggestionHistory, isEnterKey, isArrowDownKey, isArrowUpKey, nop, NEW_HISTORY, subscribeHistoryChange } from './util'
 import { SuggestionItem, SuggestionList } from './component'
 import { getSuggestions } from './service/suggestionService'
 import style from './LineSuggestions.less'
@@ -35,7 +35,7 @@ export default class LineSuggestions {
         getSuggestions()
         .then(data => {
             this._isLoading = false
-            this._suggestions = searchSuggestions(transformSuggestionData(data.items), '')
+            this._suggestions = searchSuggestions(matchSuggestionHistory(data.items), '')
             this._originSuggestions = this._suggestions
             this._render()
         })
@@ -59,6 +59,13 @@ export default class LineSuggestions {
             }
         })
         document.addEventListener('click', this.closeRequest)
+        subscribeHistoryChange(this._subscribeHistoryChange)
+    }
+
+    _subscribeHistoryChange = payload => {
+        const isHistory = payload.status === NEW_HISTORY
+        const suggestion = this._originSuggestions.find(suggestion => suggestion.name === payload.suggestionName)
+        suggestion && (suggestion.isHistory = isHistory)
     }
 
     _onSuggestionChoosed = suggestion => {
@@ -127,10 +134,6 @@ export default class LineSuggestions {
     }
     
     showSuggestions = (keyword = '') => {
-        // if (this._isOpen && this._keyword === keyword)
-        //     return
-        console.log(123)
-
         this._keyword = keyword
         this._isOpen = true
         this._suggestions = searchSuggestions(this._originSuggestions, keyword)

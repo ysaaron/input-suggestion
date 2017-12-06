@@ -1,5 +1,4 @@
 import useDefaultProps from './useDefaultProps'
-import transformSuggestionData from './transformSuggestionData'
 import searchSuggestions from './searchSuggestions'
 import nop from './nop'
 import debounce from './debounce'
@@ -11,7 +10,11 @@ import {
 import { 
     getSuggestionHistory,
     setSuggestionHistory,
-    removeSuggestionHistory
+    removeSuggestionHistory,
+    matchSuggestionHistory,
+    NEW_HISTORY,
+    REMOVE_HISTORY,
+    subscribeHistoryChange,
 } from './suggestionHistory'
 
 export {
@@ -20,10 +23,13 @@ export {
     isArrowUpKey,
     nop,
     useDefaultProps,
-    transformSuggestionData,
+    matchSuggestionHistory,
     getSuggestionHistory,
     setSuggestionHistory,
     removeSuggestionHistory,
     searchSuggestions,
-    debounce
+    debounce,
+    NEW_HISTORY,
+    REMOVE_HISTORY,
+    subscribeHistoryChange
 }
