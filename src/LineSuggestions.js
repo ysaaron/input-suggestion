@@ -1,33 +1,22 @@
-import { useDefaultProps, transformSuggestionData, searchSuggestions, setSuggestionHistory, removeSuggestionHistory } from './util'
+import { useDefaultProps, transformSuggestionData, searchSuggestions, setSuggestionHistory, removeSuggestionHistory, isEnterKey, isArrowDownKey, isArrowUpKey, nop } from './util'
 import { SuggestionItem, SuggestionList } from './component'
 import { getSuggestions } from './service/suggestionService'
 import style from './LineSuggestions.less'
 
 const defaultProps = {
     hookPoint: undefined,
-    onSuggestionChoosed: () => {}
+    onSuggestionChoosed: nop
 }
-
-const defaultSuggestions = {
-    total: 15,
-    items: [
-        { name: 'B612', logo: '../example/img/b612.png' },
-        { name: 'LOOKS', logo: '../example/img/linelooks.png' },
-        { name: 'LINE MAN', logo: '../example/img/lineman.png' },
-        { name: 'Emoji LINE', logo: '../example/img/emojiline.png' },
-        { name: 'LINE@', logo: '../example/img/lineat.png' },
-        { name: 'LINE TV', logo: '../example/img/linetools.jpg' },
-        { name: 'LINE Camera', logo: '../example/img/linecamera.png' },
-        { name: 'LINE Dictionary English-Indonesian', logo: '' },
-        { name: 'LINE DECO', logo: '../example/img/linedeco.jpg' },
-        { name: 'LINE PLAY', logo: '../example/img/lineplay.png' },
-        { name: 'LINE Antivirus', logo: '../example/img/lineantivirus.jpg' },
-        { name: 'LINE Tools', logo: '../example/img/linetools.jpg' },
-        { name: 'LINE Dictionary English-Thai', logo: '../example/img/enth.png' },
-        { name: 'LINE Dictionary Chinese-English', logo: '../example/img/cnen.png' },
-        { name: 'LINE SHOP', logo: '../example/img/lineshop.png' },
-    ]
+const getFirstListItemInContainer = ele => {
+    return ele.firstChild.firstChild
 }
+const hasNextListItem = ele => {
+    return ele && ele.nextSibling
+}
+const hasPrevListItem = ele => {
+    return ele && ele.previousElementSibling
+}
+const MOUSEOVER_EVENT = new Event('mouseover')
 
 export default class LineSuggestions {
     constructor(props = defaultProps) {
@@ -41,6 +30,7 @@ export default class LineSuggestions {
         this._keyword = ''
         this._isOpen = false
         this._isLoading = true
+        this._activeSuggestionEle = undefined
         this._beforeMount()
         getSuggestions()
         .then(data => {
@@ -55,22 +45,40 @@ export default class LineSuggestions {
         this._listContainer = document.createElement('div')
         this._listContainer.appendChild(document.createElement('ul'))
         this._listContainer.classList.add(style['list-container'])
-        this._props.hookPoint.appendChild(this._listContainer)
+        this._props.hookPoint.after(this._listContainer)
         this._props.hookPoint.addEventListener('click', e => e.stopPropagation())
+        this._props.hookPoint.addEventListener('keyup', e => {
+            if (isArrowUpKey(e)) {
+                this._prevSuggestion()
+            } else if (isArrowDownKey(e)) {
+                this._nextSuggestion()
+            } else if (isEnterKey(e)) {
+                this._onSuggestionChoosed(this._focusSuggestion)
+            } else {
+                this.showSuggestions(e.target.value)
+            }
+        })
+        document.addEventListener('click', this.closeRequest)
     }
 
     _onSuggestionChoosed = suggestion => {
         setSuggestionHistory(suggestion.name)
         suggestion.isHistory = true
-        this.showSuggestions(this._keyword)
+        this.closeRequest()
         this._props.onSuggestionChoosed(suggestion)
     }
     
-    _onSuggestionFocusIn = suggestion => {
+    _onSuggestionFocusIn = ({target, suggestion}) => {
+        if (this._activeSuggestionEle) {
+            this._activeSuggestionEle.classList.remove(style['list-item_hover'])
+        }
+        this._activeSuggestionEle = target
+        this._activeSuggestionEle.classList.add(style['list-item_hover'])
         this._focusSuggestion = suggestion
     }
 
-    _onSuggestionFocusOut = () => {
+    _onSuggestionFocusOut = ({target}) => {
+        target.classList.remove(style['list-item_hover'])
         this._focusSuggestion = undefined
     }
 
@@ -78,6 +86,28 @@ export default class LineSuggestions {
         removeSuggestionHistory(suggestion.name)
         suggestion.isHistory = false
         this.showSuggestions(this._keyword)
+    }
+
+    _nextSuggestion = () => {
+        if (hasNextListItem(this._activeSuggestionEle)) {
+            this._activeSuggestionEle.classList.remove(style['list-item_hover'])
+            this._activeSuggestionEle = this._activeSuggestionEle.nextSibling
+            this._activeSuggestionEle.firstChild.dispatchEvent(MOUSEOVER_EVENT)
+            this._activeSuggestionEle.classList.add(style['list-item_hover'])
+        } else if (!this._activeSuggestionEle) {
+            this._activeSuggestionEle = getFirstListItemInContainer(this._listContainer)
+            this._activeSuggestionEle.firstChild.dispatchEvent(MOUSEOVER_EVENT)
+            this._activeSuggestionEle.classList.add(style['list-item_hover'])
+        }
+    }
+
+    _prevSuggestion = () => {
+        if (hasPrevListItem(this._activeSuggestionEle)) {
+            this._activeSuggestionEle.classList.remove(style['list-item_hover'])
+            this._activeSuggestionEle = this._activeSuggestionEle.previousElementSibling
+            this._activeSuggestionEle.firstChild.dispatchEvent(MOUSEOVER_EVENT)
+            this._activeSuggestionEle.classList.add(style['list-item_hover'])
+        }
     }
 
     _render = () => {
@@ -97,13 +127,19 @@ export default class LineSuggestions {
     }
     
     showSuggestions = (keyword = '') => {
+        // if (this._isOpen && this._keyword === keyword)
+        //     return
+        console.log(123)
+
         this._keyword = keyword
         this._isOpen = true
         this._suggestions = searchSuggestions(this._originSuggestions, keyword)
         this._render()
+        this._activeSuggestionEle = undefined
     }
 
     getSuggestionWithHover = () => {
+        this.closeRequest()
         return !this._focusSuggestion ? undefined : { name: this._focusSuggestion.name }
     }
 

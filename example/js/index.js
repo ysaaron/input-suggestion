@@ -1,22 +1,43 @@
 import { LineSuggestions } from '../../src'
 
 const ENTER_KEY = 13
-const container = document.querySelector('#container')
-const inputDOM = container.querySelector('input')
-const lineSuggestions = new LineSuggestions({
-    hookPoint: container,
-    onSuggestionChoosed: suggestion => {}
-})
-const isEnterKey = e => (e.which === ENTER_KEY || e.keyCode === ENTER_KEY)
-const handleBoradEvent = e => {
-    if (isEnterKey(e)) {
-        console.log(lineSuggestions.getSuggestionWithHover())
-    } else {
-        lineSuggestions.showSuggestions(e.target.value)
+const checkKey = key => {
+    return e => e.which === key || e.keyCode === key
+}
+const isEnterKey = checkKey(ENTER_KEY)
+const changeInputValue = dom => {
+    return suggestionName => {
+        dom.value = suggestionName || ''
     }
 }
-const onInputFocus = e => lineSuggestions.showSuggestions(e.target.value)
+const handleKeyBoardEventWrapper = (suggestionInstance, changeInputCb) => {
+    return e => {
+        if (isEnterKey(e)) {
+            const suggestion = suggestionInstance.getSuggestionWithHover()
+            changeInputCb(suggestion.name)
+        }
+    }
+}
+const handleInputFocusWrapper = suggestionInstance => {
+    return e => {
+        suggestionInstance.showSuggestions(e.target.value)
+    }
+}
 
-inputDOM.addEventListener('keyup', handleBoradEvent)
-inputDOM.addEventListener('click', onInputFocus)
-document.addEventListener('click', e => lineSuggestions.closeRequest())
+const hookInput = document.querySelector('#hookPoint')
+const changeInput = changeInputValue(hookInput)
+const lineSuggestions = new LineSuggestions({
+    hookPoint: hookInput,
+    onSuggestionChoosed: suggestion => changeInput(suggestion.name)
+})
+hookInput.addEventListener('keyup', handleKeyBoardEventWrapper(lineSuggestions, changeInput))
+hookInput.addEventListener('click', handleInputFocusWrapper(lineSuggestions))
+
+const hookInput1 = document.querySelector('#hookPoint1')
+const changeInputOne = changeInputValue(hookInput1)
+const lineSuggestions1 = new LineSuggestions({
+    hookPoint: hookInput1,
+    onSuggestionChoosed: suggestion => changeInputOne(suggestion.name)
+})
+hookInput1.addEventListener('keyup', handleKeyBoardEventWrapper(lineSuggestions1, changeInputOne))
+hookInput1.addEventListener('click', handleInputFocusWrapper(lineSuggestions1))

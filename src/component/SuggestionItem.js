@@ -36,8 +36,17 @@ const defaultRemoveHistoryButtonProps = {
 const Content = (props = defaultContentProps) => {
     props = useDefaultProps(defaultContentProps, props)
     const onChoose = e => props.onChoose(props.suggestion)
-    const onFocusIn = e => props.onSuggestionFocusIn(props.suggestion)
-    const onFocusOut = e => props.onSuggestionFocusOut()
+    const onFocusIn = e => {
+        props.onSuggestionFocusIn({
+            target: e.target.parentNode,
+            suggestion: props.suggestion
+        })
+    }
+    const onFocusOut = e => {
+        props.onSuggestionFocusOut({
+            target: e.target.parentNode
+        })
+    }
 
     const wrapper = document.createElement('div')
     const textDOM = document.createElement('span')
@@ -58,7 +67,10 @@ const Content = (props = defaultContentProps) => {
 
 const RemoveHistoryButton = (props = defaultRemoveHistoryButtonProps) => {
     props = useDefaultProps(defaultRemoveHistoryButtonProps, props)
-    const onRemove = e => props.onRemove(props.suggestion)
+    const onRemove = e => {
+        e.stopPropagation()
+        props.onRemove(props.suggestion)
+    }
 
     const buttonDOM = document.createElement('button')
     buttonDOM.textContent = 'Remove History'
@@ -73,7 +85,6 @@ const SuggestionItem = (props = defaultSuggestionItemProps) => {
 
     const liDOM = document.createElement('li')
     liDOM.classList.add(style['list-item'])
-    props.suggestion.isHistory && liDOM.classList.add(style['list-item_history'])
     liDOM.appendChild(Content(props))
     props.suggestion.isHistory && liDOM.appendChild(RemoveHistoryButton({
         suggestion: props.suggestion,

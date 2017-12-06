@@ -16,6 +16,7 @@ export default function SuggestionList(props = defaultSuggestionListProps) {
     const {
         isLoading,
         suggestions,
+        suggestionIndex,
         onSuggestionChoosed,
         onSuggestionFocusIn,
         onSuggestionFocusOut,
