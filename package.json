@@ -6,7 +6,8 @@
   "author": "Aaron Young <aaron.young@tenmax.io>",
   "license": "MIT",
   "scripts": {
-    "example:watch": "cd example && npx webpack --watch"
+    "example:watch": "cd example && npx webpack --watch",
+    "build:example": "cd example && npx webpack"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -19,5 +20,6 @@
     "less-loader": "^4.0.5",
     "style-loader": "^0.19.0",
     "webpack": "^3.9.1"
-  }
+  },
+  "dependencies": {}
 }
