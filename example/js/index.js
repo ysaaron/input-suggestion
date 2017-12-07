@@ -11,18 +11,20 @@ const handleInputFocusWrapper = suggestionInstance => {
     }
 }
 
-const hookInput = document.querySelector('#hookPoint')
-const changeInput = changeInputValue(hookInput)
+const entry = document.querySelector('#entry')
+const changeInput = changeInputValue(entry)
 const lineSuggestions = new LineSuggestions({
-    hookPoint: hookInput,
+    entryPoint: entry,
     onSuggestionChoosed: suggestion => changeInput(suggestion.name)
 })
-hookInput.addEventListener('click', handleInputFocusWrapper(lineSuggestions))
+entry.addEventListener('click', handleInputFocusWrapper(lineSuggestions))
 
-const hookInput1 = document.querySelector('#hookPoint1')
-const changeInputOne = changeInputValue(hookInput1)
+const entry1 = document.querySelector('#entry1')
+const hookPoint = document.querySelector('#hook')
+const changeInputOne = changeInputValue(entry1)
 const lineSuggestions1 = new LineSuggestions({
-    hookPoint: hookInput1,
+    entryPoint: entry1,
+    hookPoint,
     onSuggestionChoosed: suggestion => changeInputOne(suggestion.name)
 })
-hookInput1.addEventListener('click', handleInputFocusWrapper(lineSuggestions1))
+entry1.addEventListener('click', handleInputFocusWrapper(lineSuggestions1))

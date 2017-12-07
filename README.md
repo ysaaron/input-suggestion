@@ -41,7 +41,16 @@ import { LineSuggestions } from 'LineSuggestions'
 ```
 
 ### LineSuggestions
-| Attribute                      | Value       | Description |
-|--------------------------------|-------------|-------------|
-| [Required] hookPoint           | DOM Element |             |
-| [Optional] onSuggestionChoosed | function    |             |
+#### Constructor
+| Attribute                      | Value             | Default Value                                                      | Description                                     |
+|--------------------------------|-------------------|--------------------------------------------------------------------|-------------------------------------------------|
+| [Required] entryPoint          | Input DOM Element |                                                                    |                                                 |
+| [Optional] hookPoint           | DOM Element       | entryPoint                                                         | Everywhere you want to show the suggestion list |
+| [Optional] onSuggestionChoosed | function          | suggestion => {} <br><br> suggestion properties: name: type String | Get current focus suggestion                    |
+
+### Method
+| Method                 | Arguments                  | Description                                                                                 |
+|------------------------|----------------------------|---------------------------------------------------------------------------------------------|
+| showSuggestions        | [Optional] keyword: String | Open the suggestion list with keyword to filter suggestions                                 |
+| closeRequest           |                            | Close suggestion list                                                                       |
+| getSuggestionWithHover |                            | Get current focus suggestion, if there is no suggestion on focus, it may return `undefined` |

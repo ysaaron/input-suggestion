@@ -4,6 +4,7 @@ import { getSuggestions } from './service/suggestionService'
 import style from './LineSuggestions.less'
 
 const defaultProps = {
+    entryPoint: undefined,
     hookPoint: undefined,
     onSuggestionChoosed: nop
 }
@@ -21,8 +22,9 @@ const MOUSEOVER_EVENT = new Event('mouseover')
 export default class LineSuggestions {
     constructor(props = defaultProps) {
         this._props = useDefaultProps(defaultProps, props)
-        if (!this._props.hookPoint) throw 'Please provide a dom!'
+        if (!this._props.entryPoint) throw 'Please provide a dom!'
 
+        this._hookPoint = !this._props.hookPoint ? this._props.entryPoint : this._props.hookPoint
         this._suggestions = []
         this._originSuggestions = this._suggestions
         this._focusSuggestion = undefined
@@ -45,9 +47,9 @@ export default class LineSuggestions {
         this._listContainer = document.createElement('div')
         this._listContainer.appendChild(document.createElement('ul'))
         this._listContainer.classList.add(style['list-container'])
-        this._props.hookPoint.after(this._listContainer)
-        this._props.hookPoint.addEventListener('click', e => e.stopPropagation())
-        this._props.hookPoint.addEventListener('keyup', e => {
+        this._hookPoint.after(this._listContainer)
+        this._props.entryPoint.addEventListener('click', e => e.stopPropagation())
+        this._props.entryPoint.addEventListener('keyup', e => {
             if (isArrowUpKey(e)) {
                 this._prevSuggestion()
             } else if (isArrowDownKey(e)) {
@@ -87,6 +89,7 @@ export default class LineSuggestions {
     _onSuggestionFocusOut = ({target}) => {
         target.classList.remove(style['list-item_hover'])
         this._focusSuggestion = undefined
+        console.log(this._focusSuggestion)
     }
 
     _onHistoryRemove = suggestion => {
