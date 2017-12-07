@@ -37,6 +37,4 @@ app.get('/linesuggestions', (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile('example.html', { root: path.resolve(__dirname, './')})
 })
-app.listen(3000, () => {
-    console.log('start')
-})
+app.listen(3000)

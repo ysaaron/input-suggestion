@@ -6,8 +6,8 @@
 ## Run example
 ```shell
 yarn install
-yarn build:example
-open ./example/example.html
+yarn app
+open http://localhost:3000
 ```
 
 ## Getting started
