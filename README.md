@@ -48,7 +48,7 @@ import { LineSuggestions } from 'input-sutggestions'
 | [Optional] hookPoint           | DOM Element       | entryPoint                                                         | Everywhere you want to show the suggestion list |
 | [Optional] onSuggestionChoosed | function          | suggestion => {} <br><br> suggestion properties: name: type String | Get current focus suggestion                    |
 
-### Method
+#### Method
 | Method                 | Arguments                  | Description                                                                                 |
 |------------------------|----------------------------|---------------------------------------------------------------------------------------------|
 | showSuggestions        | [Optional] keyword: String | Open the suggestion list with keyword to filter suggestions                                 |
