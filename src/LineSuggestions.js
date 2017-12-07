@@ -35,9 +35,9 @@ export default class LineSuggestions {
         this._activeSuggestionEle = undefined
         this._beforeMount()
         getSuggestions()
-        .then(data => {
+        .then(suggestions => {
             this._isLoading = false
-            this._suggestions = searchSuggestions(matchSuggestionHistory(data.items), '')
+            this._suggestions = searchSuggestions(matchSuggestionHistory(suggestions.items), '')
             this._originSuggestions = this._suggestions
             this._render()
         })
@@ -89,7 +89,6 @@ export default class LineSuggestions {
     _onSuggestionFocusOut = ({target}) => {
         target.classList.remove(style['list-item_hover'])
         this._focusSuggestion = undefined
-        console.log(this._focusSuggestion)
     }
 
     _onHistoryRemove = suggestion => {

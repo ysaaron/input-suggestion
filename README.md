@@ -14,30 +14,30 @@ open ./example/example.html
 1. HTML structure requirement
 ```html
 <input 
-    id="hookhere"
+    id="txtinput"
     type="text"
 />
 ```
 
 2. That's it!
 ```javascript
-import { LineSuggestions } from 'LineSuggestions'
+import { LineSuggestions } from 'input-suggestions'
 
 // Create hook point
-const hookpoint = document.querySelector('#hookhere')
+const inputEle = document.querySelector('#txtinput')
 // Regist hook point and callback when suggestion is choosed
 const suggestions = new LineSuggestions({
-    hookPoint: hookpoint,
+    entryPoint: inputEle,
     onSuggestionChoosed: suggestionName => {}
 })
 // Open suggestions whenever you want
-hookpoint.addEventListener('click', e => suggestions.showSuggestions())
+inputEle.addEventListener('click', e => suggestions.showSuggestions())
 ```
 
 ## API
 ### Importing
 ```javascript
-import { LineSuggestions } from 'LineSuggestions'
+import { LineSuggestions } from 'input-sutggestions'
 ```
 
 ### LineSuggestions
