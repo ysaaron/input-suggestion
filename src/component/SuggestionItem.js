@@ -1,16 +1,18 @@
-import { useDefaultProps } from '../util'
+import { useDefaultProps, nop } from '../util'
 import style from './SuggestionItem.less'
 
+const defaultSuggestionProps = {
+    name: '',
+    logo: '',
+    isHistory: false
+}
+
 const defaultSuggestionItemProps = {
-    onChoose: () => {},
-    onHistoryRemove: () => {},
-    onSuggestionFocusIn: () => {},
-    onSuggestionFocusOut: () => {},
-    suggestion: {
-        name: '',
-        logo: '',
-        isHistory: false
-    }
+    onChoose: nop,
+    onHistoryRemove: nop,
+    onSuggestionFocusIn: nop,
+    onSuggestionFocusOut: nop,
+    suggestion: defaultSuggestionProps
 }
 
 const defaultContentProps = {
@@ -19,18 +21,14 @@ const defaultContentProps = {
         logo: '',
         isHistory: false
     },
-    onChoose: () => {},
-    onSuggestionFocusIn: () => {},
-    onSuggestionFocusOut: () => {},
+    onChoose: nop,
+    onSuggestionFocusIn: nop,
+    onSuggestionFocusOut: nop,
 }
 
 const defaultRemoveHistoryButtonProps = {
-    suggestion: {
-        name: '',
-        logo: '',
-        isHistory: false
-    },
-    onRemove: () => {}
+    suggestion: defaultSuggestionProps,
+    onRemove: nop
 }
 
 const Content = (props = defaultContentProps) => {

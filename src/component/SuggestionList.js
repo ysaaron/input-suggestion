@@ -1,4 +1,4 @@
-import { useDefaultProps } from '../util'
+import { useDefaultProps, nop } from '../util'
 import SuggestionItem from './SuggestionItem'
 import LoadingItem from './LoadingItem'
 import style from './SuggestionList.less'
@@ -6,10 +6,10 @@ import style from './SuggestionList.less'
 const defaultSuggestionListProps = {
     isLoading: false,
     suggestions: [],
-    onSuggestionChoosed: () => {},
-    onSuggestionFocusIn: () => {},
-    onSuggestionFocusOut: () => {},
-    onHistoryRemove: () => {}
+    onSuggestionChoosed: nop,
+    onSuggestionFocusIn: nop,
+    onSuggestionFocusOut: nop,
+    onHistoryRemove: nop
 }
 
 export default function SuggestionList(props = defaultSuggestionListProps) {
