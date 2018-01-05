@@ -34,13 +34,6 @@ export default class LineSuggestions {
         this._isLoading = true
         this._activeSuggestionEle = undefined
         this._beforeMount()
-        getSuggestions()
-        .then(suggestions => {
-            this._isLoading = false
-            this._suggestions = searchSuggestions(matchSuggestionHistory(suggestions.items), '')
-            this._originSuggestions = this._suggestions
-            this._render()
-        })
     }
 
     _beforeMount = () => {
@@ -62,6 +55,13 @@ export default class LineSuggestions {
         })
         document.addEventListener('click', this.closeRequest)
         subscribeHistoryChange(this._subscribeHistoryChange)
+        getSuggestions()
+            .then(suggestions => {
+                this._isLoading = false
+                this._suggestions = searchSuggestions(matchSuggestionHistory(suggestions.items), '')
+                this._originSuggestions = this._suggestions
+                this._render()
+            })
     }
 
     _subscribeHistoryChange = payload => {

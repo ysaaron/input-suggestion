@@ -32,5 +32,11 @@ module.exports = {
           }]
         }
       ]
+    },
+
+    resolve: {
+      alias: {
+        jsx: path.resolve(__dirname, "../src/dom-generator/jsx")
+      }
     }
   }

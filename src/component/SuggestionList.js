@@ -1,11 +1,12 @@
 import { useDefaultProps, nop } from '../util'
-import SuggestionItem from './SuggestionItem'
+import SuggestionItem, { SuggestionItemJsx } from './SuggestionItem'
 import LoadingItem from './LoadingItem'
 import style from './SuggestionList.less'
 
 const defaultSuggestionListProps = {
     isLoading: false,
     suggestions: [],
+    suggestionOnFocus: undefined,
     onSuggestionChoosed: nop,
     onSuggestionFocusIn: nop,
     onSuggestionFocusOut: nop,
@@ -42,4 +43,34 @@ export default function SuggestionList(props = defaultSuggestionListProps) {
     }
 
     return ulDOM
+}
+
+export function SuggestionListJsx(props = defaultSuggestionListProps) {
+    const {
+        isLoading,
+        suggestions,
+        suggestionOnFocus,
+        onSuggestionChoosed,
+        onSuggestionFocusIn,
+        onSuggestionFocusOut,
+        onHistoryRemove
+    } = useDefaultProps(defaultSuggestionListProps, props)
+    return (
+        <ul className={style['list-wrapper']}>
+            {
+                isLoading ?
+                <li>Loading</li> :
+                suggestions.map(suggestion => (
+                    <SuggestionItemJsx
+                        suggestion={suggestion}
+                        suggestionOnFocus={suggestionOnFocus}
+                        onChoose={onSuggestionChoosed}
+                        onSuggestionFocusIn={onSuggestionFocusIn}
+                        onSuggestionFocusOut={onSuggestionFocusOut}
+                        onHistoryRemove={onHistoryRemove}
+                    />
+                ))
+            }
+        </ul>
+    )
 }
