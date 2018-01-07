@@ -22,6 +22,7 @@ const SuggestionsJsx = props => {
                 onSuggestionFocusOut={props.onSuggestionFocusOut}
                 onHistoryRemove={props.onHistoryRemove}
             />
+            {props.children}
         </div>
     )
 }

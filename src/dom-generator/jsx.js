@@ -14,3 +14,7 @@ export default function jsx(jsxObject) {
         }
     }
 }
+
+export function experimentalJsx(jsx) {
+    const tag = jsx.elementName
+}
